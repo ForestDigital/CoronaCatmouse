@@ -6,7 +6,7 @@ local composer = require "composer"
 
 function createMap( currentMap )
 
-	init()
+	gameData.init()
 	
 
 	local physics = require( "physics" )
@@ -132,16 +132,37 @@ function onLocalCollision( self, event )
 	-- elseif ( event.phase == "ended" ) then
 	-- 	tunnelegion = false
 	-- end	
+	local options = { }
 	if(self == gameData.player) then
 		if event.other.isHole then
 			timer.performWithDelay( 100, tunnel )
 		elseif event.other.isCheese then
 			kill()
-			composer.gotoScene( "postgame", "fade", 400 )
-		
+			timer.cancel(updMap)
+			timer.cancel(updMouse)
+			--timer.cancel(updCatAI)
+			options = {effect = "zoomInOutFadeRotate",
+    				time = 800,
+     				params = { win=true, currentLevel = gameData.level }}
+     				timer.performWithDelay(2000, function ( )
+     					
+     				
+			composer.gotoScene( "postgame", options )
+			end
+			, 1
+		)
 		elseif event.other.isCat then
 			kill()
-			composer.gotoScene("postgame", "fade", 400)
+			options = {effect = "fade",
+    				time = 800,
+     				params = { win=false }}
+			timer.performWithDelay(2000, function ( )
+     					
+     				
+			composer.gotoScene( "postgame", options )
+			end
+			, 1
+		)
 		end 
 
 	elseif (self.isCat) then
