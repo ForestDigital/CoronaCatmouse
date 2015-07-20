@@ -114,6 +114,7 @@ function scene:show( event )
 		--init()
 		composer.removeScene("mainmenu")
 		composer.removeScene("postgame")
+		composer.removeScene("selectlevel")
 		createMap(level[gameData.level])
 
 		for i=1,gameData.cats.num do
@@ -125,7 +126,6 @@ function scene:show( event )
 
 		updMap = timer.performWithDelay( 20, updateMap, -1 )
 		updMouse = timer.performWithDelay( 10, controlmouse , -1 )
-		-- updFrame = timer.performWithDelay( 10, enterFrame, -1 )
 		updCatAI = timer.performWithDelay( 10, catAI, -1)
 
 		createDisplay()
@@ -179,7 +179,7 @@ function scene:destroy( event )
 		gameData.player:removeSelf(); gameData.player = nil;
 
 		--gameData.cats = nil;
-		gameData.level = 2
+		--gameData.level = 2
 
 		gameData.cheese:removeSelf(); gameData.cheese = nil;
 

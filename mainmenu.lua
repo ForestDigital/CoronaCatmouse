@@ -33,7 +33,7 @@ local function onSceneTouch( self, event )
 
 		if self == CMstart then
 		
-			composer.gotoScene( "rungame", "fade", 800  )
+			composer.gotoScene( "selectlevel", "fade", 800  )
 		
 			return true
 		elseif self == CMhighscores then
@@ -94,6 +94,8 @@ function scene:show( event )
 				CMstart:addEventListener( "touch", CMstart )
 				CMhighscores:addEventListener("touch", CMhighscores)
 				composer.removeScene( "rungame" )
+				composer.removeScene( "highscoresmenu" )
+				composer.removeScene( "postgame" )
 
 	
 	end

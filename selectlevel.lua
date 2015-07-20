@@ -5,25 +5,24 @@
 ---------------------------------------------------------------------------------
 local jslib = require( "simplejoystick" )
 local composer = require( "composer" )
-local playerData = require( "playerdata" )
+local gameData = require( "gamedata" )
 local scene = composer.newScene()
+local playerData = require( "playerdata" )
 
 ---------------------------------------------------------------------------------
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
-
-local CMnext, CMmenu, text1
+local Imglvl = { }
+local ImgLocked = { }
 
 local js
 
 function createDisplay()
 	local panel = display.newImageRect( "GamePanel.png",display.contentWidth,display.contentHeight/3 )
 	panel.x, panel.y = display.contentWidth/2,((display.contentHeight/3)*2.80)
-
 	js = jslib.new( display.contentWidth/16, display.contentWidth/8 )
 	js.x = panel.x
 	js.y = panel.y
-
 	js:activate()
 end
 
@@ -31,58 +30,43 @@ createDisplay()
 
 local function onSceneTouch( self, event )
 	if event.phase == "began" then
-
-		if self == CMnext then
-			
-			composer.gotoScene( "selectlevel", "fade", 800  )
-		
-			return true
-		elseif self == CMmenu then
-			composer.gotoScene( "mainmenu", "fade", 800 )
-			return true
+		for i=1, 10 do
+			if self == Imglvl[i] then
+				gameData.level = i
+				composer.gotoScene( "rungame", "fade", 800 )
+				return true	
+			end
 		end
-
-
 	end
+end
+
+local function lockLevel( )
+	return true-- body
 end
 
 
 -- Called when the scene's view does not exist:
 function scene:create( event )
 	local sceneGroup = self.view
+	local xVals = {1, 2, 3, 4, 5, 1, 2, 3, 4, 5}
+	local yVals = {4, 4, 4, 4, 4, 2, 2, 2, 2, 2}
 
+	for i=1, 10 do
+		Imglvl[i] = display.newImage( "level"..i..".png" )
+		Imglvl[i].x = (display.contentWidth/6) * xVals[i]
+		Imglvl[i].y = display.contentCenterY/yVals[i]
+		sceneGroup:insert( Imglvl[i] )
+		Imglvl[i].touch = onSceneTouch
 
-	
-	CMlogo = display.newText( "GAME OVER!!!", 0, 0, native.systemFontBold, 32 )
-	CMlogo.x = display.contentCenterX
-	CMlogo.y = display.contentCenterY/2
-
-	CMnext = display.newText( "Next Level", 0, 0, native.systemFontBold, 32 )
-	CMnext.x = display.contentCenterX/2
-	CMnext.y = display.contentCenterY
-
-	CMmenu = display.newText( "Back to Menu", 0, 0, native.systemFontBold, 32 )
-	CMmenu.x = display.contentCenterX + display.contentCenterX/3
-	CMmenu.y = display.contentCenterY
-	
-	sceneGroup:insert( CMlogo )
-	sceneGroup:insert( CMnext )
-	sceneGroup:insert( CMmenu )
-	
-	CMnext.touch = onSceneTouch
-	CMmenu.touch = onSceneTouch
-	
-	text1 = display.newText( "menu", 0, 0, native.systemFontBold, 24 )
-	text1:setFillColor( 255 )
-	text1.x, text1.y = display.contentWidth * 0.5, 50
-	sceneGroup:insert( text1 )
-	
-	if event.params.win then
-		if event.params.currentLevel == playerData.highestLevel then
-		playerData.highestLevel = playerData.highestLevel + 1
+		if playerData.highestLevel < i then
+			ImgLocked[i] = display.newImage("levelover.png")
+			ImgLocked[i].x = (display.contentWidth/6) * xVals[i]
+			ImgLocked[i].y = display.contentCenterY/yVals[i]
+			sceneGroup:insert( ImgLocked[i] )
+			ImgLocked[i].touch = lockLevel
 		end
+
 	end
-	
 	
 end
 
@@ -90,13 +74,19 @@ function scene:show( event )
 	
 	local phase = event.phase
 	if "will" == phase then
-		composer.removeScene( "rungame" )
+		composer.removeScene( "mainmenu" )
+		composer.removeScene( "postgame" )
 	end
 	
 	if "did" == phase then
-				CMnext:addEventListener( "touch", CMnext )
-				CMmenu:addEventListener("touch", CMmenu)
-				composer.removeScene( "rungame" )
+				for i=1, 10 do
+					Imglvl[i]:addEventListener( "touch", Imglvl[i])
+				end
+				for i=playerData.highestLevel + 1, 10 do
+					ImgLocked[i]:addEventListener( "touch", ImgLocked[i])
+				end
+				composer.removeScene( "mainmenu" )
+				composer.removeScene( "postgame" )
 
 	
 	end
