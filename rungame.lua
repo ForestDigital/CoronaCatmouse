@@ -66,7 +66,7 @@ function removeGame( )
 		end
 
 		for i=1, gameData.cats.num do
-			gameData.cats[i]:removeSelf(); gameData.cats[i] = nil;			
+			gameData.cats[i]:removeSelf(); --gameData.cats[i] = nil;			
 		end
 
 		for i=1, gameData.holes.num do
@@ -77,9 +77,11 @@ function removeGame( )
 		gameData.floors = nil;
 		gameData.holes = nil;
 
+		gameData.player.facedLeft = false
 		gameData.player:removeSelf(); gameData.player = nil;
 
-		gameData.cats = nil;
+		--gameData.cats = nil;
+		--gameData.level = 2
 
 		gameData.cheese:removeSelf(); gameData.cheese = nil;
 
@@ -106,6 +108,9 @@ function scene:show( event )
 	
 	if phase == "will" then
 		-- Called when the scene is still off screen and is about to move on screen
+		composer.removeScene("mainmenu")
+		composer.removeScene("postgame")
+		composer.removeScene("selectlevel")
 	elseif phase == "did" then
 		-- Called when the scene is now on screen
 		-- 
@@ -154,37 +159,8 @@ end
 function scene:destroy( event )
 	local sceneGroup = self.view
 	
-	timer.cancel( updMap ); updMap = nil;
-		timer.cancel( updMouse ); updMouse = nil;
-		-- timer.cancel( updFrame ); updFrame = nil;
-		timer.cancel( updCatAI ); updCatAI = nil;
-
-		for i=1, gameData.walls.num do
-			gameData.walls[i]:removeSelf(); gameData.walls[i] = nil;			
-		end
-
-		for i=1, gameData.cats.num do
-			gameData.cats[i]:removeSelf(); --gameData.cats[i] = nil;			
-		end
-
-		for i=1, gameData.holes.num do
-			gameData.holes[i]:removeSelf(); gameData.holes[i] = nil;			
-		end
-
-		gameData.walls = nil;
-		gameData.floors = nil;
-		gameData.holes = nil;
-
-		gameData.player.facedLeft = false
-		gameData.player:removeSelf(); gameData.player = nil;
-
-		--gameData.cats = nil;
-		--gameData.level = 2
-
-		gameData.cheese:removeSelf(); gameData.cheese = nil;
-
-		display.remove(gameData.map); gameData.map = nil;
-
+	
+	removeGame()
 	-- Called prior to the removal of scene's "view" (sceneGroup)
 	-- 
 	-- INSERT code here to cleanup the scene

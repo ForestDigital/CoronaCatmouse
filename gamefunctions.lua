@@ -140,7 +140,7 @@ function onLocalCollision( self, event )
 			kill()
 			timer.cancel(updMap)
 			timer.cancel(updMouse)
-			--timer.cancel(updCatAI)
+			timer.cancel(updCatAI)
 			options = {effect = "zoomInOutFadeRotate",
     				time = 800,
      				params = { win=true, currentLevel = gameData.level }}
@@ -149,10 +149,12 @@ function onLocalCollision( self, event )
      				
 			composer.gotoScene( "postgame", options )
 			end
-			, 1
-		)
+			, 1)
 		elseif event.other.isCat then
 			kill()
+			timer.cancel(updMap)
+			timer.cancel(updMouse)
+			timer.cancel(updCatAI)
 			options = {effect = "fade",
     				time = 800,
      				params = { win=false }}
@@ -161,8 +163,7 @@ function onLocalCollision( self, event )
      				
 			composer.gotoScene( "postgame", options )
 			end
-			, 1
-		)
+			, 1)
 		end 
 
 	elseif (self.isCat) then
