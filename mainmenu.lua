@@ -16,12 +16,15 @@ local CMlogo, CMstart, CMhighscores, text1
 local js
 
 function createDisplay()
-	local panel = display.newImageRect( "GamePanel.png",display.contentWidth,display.contentHeight/3 )
-	panel.x, panel.y = display.contentWidth/2,((display.contentHeight/3)*2.80)
+	local panel = display.newImageRect( "GamePanel.png",display.contentWidth,(display.contentHeight/3)*0.9 )
+	panel.x, panel.y = display.contentWidth/2,((display.contentHeight/3)*2.60)
 
-	js = jslib.new( display.contentWidth/16, display.contentWidth/8 )
-	js.x = panel.x
-	js.y = panel.y
+	local toppanel = display.newImageRect("toppanel.png", display.contentWidth,100)
+	toppanel.x, toppanel.y = display.contentCenterX,33
+
+	js = jslib.new( display.contentWidth/20, display.contentWidth/11 )
+	js.x = panel.x + panel.x*0.7
+	js.y = panel.y + panel.y*0.025
 
 	js:activate()
 end
