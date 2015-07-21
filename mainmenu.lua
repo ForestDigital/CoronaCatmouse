@@ -16,11 +16,16 @@ local CMlogo, CMstart, CMhighscores, text1
 local js
 
 function createDisplay()
+local backpanel = display.newImageRect("backpanel.png", display.contentWidth, 2*(display.contentHeight/3) + 20)
+	backpanel.x, backpanel.y = display.contentCenterX, display.contentHeight/2 - 100
+
 	local panel = display.newImageRect( "GamePanel.png",display.contentWidth,(display.contentHeight/3)*0.9 )
 	panel.x, panel.y = display.contentWidth/2,((display.contentHeight/3)*2.60)
 
 	local toppanel = display.newImageRect("toppanel.png", display.contentWidth,100)
 	toppanel.x, toppanel.y = display.contentCenterX,33
+
+
 
 	js = jslib.new( display.contentWidth/20, display.contentWidth/11 )
 	js.x = panel.x + panel.x*0.7
@@ -57,15 +62,15 @@ function scene:create( event )
 	
 	CMlogo = display.newImage( "CMlogo.png" )
 	CMlogo.x = display.contentCenterX
-	CMlogo.y = display.contentCenterY/2
+	CMlogo.y = display.contentCenterY/3
 
 	CMstart = display.newImage( "start.png" )
 	CMstart.x = display.contentCenterX/2
-	CMstart.y = display.contentCenterY
+	CMstart.y = display.contentCenterY+100
 
 	CMhighscores = display.newImage( "highscores.png" )
 	CMhighscores.x = display.contentCenterX + display.contentCenterX/3
-	CMhighscores.y = display.contentCenterY
+	CMhighscores.y = display.contentCenterY+100
 	
 	sceneGroup:insert( CMlogo )
 	sceneGroup:insert( CMstart )
@@ -74,11 +79,7 @@ function scene:create( event )
 	CMstart.touch = onSceneTouch
 	CMhighscores.touch = onSceneTouch
 	
-	text1 = display.newText( "menu", 0, 0, native.systemFontBold, 24 )
-	text1:setFillColor( 255 )
-	text1.x, text1.y = display.contentWidth * 0.5, 50
-	sceneGroup:insert( text1 )
-	
+		
 		
 	
 	

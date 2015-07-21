@@ -9,6 +9,17 @@ local scene = composer.newScene()
 local js
 
 	function createDisplay()
+	--accounts for iPhone, galaxy screen differences	
+	local coverBottom = display.newRect(display.contentCenterX, display.contentHeight,
+									display.contentWidth+20,100)
+						coverBottom:setFillColor(0,0,0)
+	local coverTop = display.newRect(display.contentCenterX, 0, 
+									display.contentWidth+20,100)
+						coverTop:setFillColor(0,0,0)
+
+	local backpanel = display.newImageRect("backpanel.png", display.contentWidth, 2*(display.contentHeight/3) + 20)
+	backpanel.x, backpanel.y = display.contentCenterX, display.contentHeight/2 - 100
+
 	local panel = display.newImageRect( "GamePanel.png",display.contentWidth,(display.contentHeight/3)*0.9 )
 	panel.x, panel.y = display.contentWidth/2,((display.contentHeight/3)*2.60)
 
