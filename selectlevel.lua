@@ -54,16 +54,16 @@ function scene:create( event )
 	local yVals = {4, 4, 4, 4, 4, 2, 2, 2, 2, 2}
 
 	for i=1, 10 do
-		Imglvl[i] = display.newImage( "level"..i..".png" )
+		Imglvl[i] = display.newImageRect( "level"..i..".png", 70, 70 )
 		Imglvl[i].x = (display.contentWidth/6) * xVals[i]
-		Imglvl[i].y = display.contentCenterY/yVals[i]
+		Imglvl[i].y = display.contentCenterY/yVals[i] + 60
 		sceneGroup:insert( Imglvl[i] )
 		Imglvl[i].touch = onSceneTouch
 
 		if playerData.highestLevel < i then
-			ImgLocked[i] = display.newImage("levelover.png")
+			ImgLocked[i] = display.newImageRect("levelover.png", 70, 70)
 			ImgLocked[i].x = (display.contentWidth/6) * xVals[i]
-			ImgLocked[i].y = display.contentCenterY/yVals[i]
+			ImgLocked[i].y = display.contentCenterY/yVals[i] + 60
 			sceneGroup:insert( ImgLocked[i] )
 			ImgLocked[i].touch = lockLevel
 		end

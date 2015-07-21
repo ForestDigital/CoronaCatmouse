@@ -17,7 +17,7 @@ local js
 									display.contentWidth+20,100)
 						coverTop:setFillColor(0,0,0)
 
-	local backpanel = display.newImageRect("backpanel.png", display.contentWidth, 2*(display.contentHeight/3) + 20)
+	local backpanel = display.newImageRect("backpanel.png", display.contentWidth+100, 2*(display.contentHeight/3) + 20)
 	backpanel.x, backpanel.y = display.contentCenterX, display.contentHeight/2 - 100
 
 	local panel = display.newImageRect( "GamePanel.png",display.contentWidth,(display.contentHeight/3)*0.9 )
