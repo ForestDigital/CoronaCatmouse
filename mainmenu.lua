@@ -11,7 +11,7 @@ local scene = composer.newScene()
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
 
-local CMlogo, CMstart, CMhighscores, text1, menuMouse, menuCat
+local CMlogo, CMstart, CMhighscores, text1, menuMouse, menuCat, cycler
 local instructions = { }
 
 local js
@@ -42,7 +42,7 @@ function cycleInstructions( )
 		instructions[i].alpha = 0
 	end
 	idx = 0
-	timer.performWithDelay(5000, function ( )
+	cycler = timer.performWithDelay(5000, function ( )
 		idx = idx+1
 		idx = idx%5
 		transition.to(instructions[idx -1], {alpha =0,time=1000})
@@ -99,6 +99,12 @@ function endAnimation( )
 			transition.cancel(menuCat)
 			menuMouse:removeSelf()
 			menuCat:removeSelf()
+
+			timer.cancel(cycler)
+
+			for i=1,4 do
+				instructions[i]:removeSelf()
+			end
 end
 
 local function onSceneTouch( self, event )
@@ -106,7 +112,7 @@ local function onSceneTouch( self, event )
 
 		if self == CMstart then
 			
-
+			endAnimation()
 			composer.gotoScene( "selectlevel", "fade", 800  )
 		
 			return true
