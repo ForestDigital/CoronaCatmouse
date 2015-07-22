@@ -12,6 +12,7 @@ local scene = composer.newScene()
 ---------------------------------------------------------------------------------
 
 local CMlogo, CMstart, CMhighscores, text1, menuMouse, menuCat
+local instructions = { }
 
 local js
 
@@ -31,6 +32,23 @@ function createDisplay()
 	js.y = panel.y + panel.y*0.025
 
 	js:activate()
+end
+
+function cycleInstructions( )
+	imgs = {"menu1.png", "menu2.png", "menu3.png", "menu4.png"}
+	for i = 1, 4 do
+		instructions[i] = display.newImageRect(imgs[i], 300, 75)
+		instructions[i].x, instructions[i].y = display.contentCenterX, display.contentHeight/3
+		instructions[i].alpha = 0
+	end
+	idx = 0
+	timer.performWithDelay(5000, function ( )
+		idx = idx+1
+		idx = idx%5
+		transition.to(instructions[idx -1], {alpha =0,time=1000})
+		transition.to(instructions[idx], {alpha=1, time=1000})
+		
+	end, -1)
 end
 
 function firstAnimation()
@@ -74,17 +92,20 @@ function thirdAnimaton( )
 		transition.to(menuCat,{x=display.contentWidth+100,y=display.contentCenterY, time=3000,
 					onComplete=secondAnimation})
 	end, 1)
+end
 
+function endAnimation( )
+			transition.cancel(menuMouse)
+			transition.cancel(menuCat)
+			menuMouse:removeSelf()
+			menuCat:removeSelf()
 end
 
 local function onSceneTouch( self, event )
 	if event.phase == "began" then
 
 		if self == CMstart then
-			transition.cancel(menuMouse)
-			transition.cancel(menuCat)
-			menuMouse:removeSelf()
-			menuCat:removeSelf()
+			
 
 			composer.gotoScene( "selectlevel", "fade", 800  )
 		
@@ -126,6 +147,7 @@ function scene:create( event )
 	
 		
 		firstAnimation()
+		cycleInstructions()
 		createDisplay()
 	
 	
